@@ -1,0 +1,52 @@
+#generally written between forward slashes
+/your regex here/
+
+#metacharacters allow the use of pre-defined shorthand to match specific characters 
+\d #will match any digit in the text
+\w #will match any word character(letters, numbers, underscores)
+\W #match non-word characters(spaces, punctuation)
+
+#if you want to match a specific group of characters, /aeiou/ wont work, instead it will look for aeiou consecutively in a word. Use square brackets to match any of the characters inside the brackets
+[aeiou]
+
+#ranges
+[abcdefghij] #can instead be written [a-j]
+[012345] ----> [0-5]
+
+#double vowels
+/aa|oo|ee|ii|uu|ae|ea|ou|ie|ei|eo|oe/ #can be written as 
+[aeiou][aeiou] #or [aeiou]{2} #the braces mean the pattern or characters must repeat that number of times
+
+#Ruby methods with Regex 
+#scan. this method returns an array of ALL items in the string that match a given Regular Expression 
+"The rain in Spain lies mainly in the plain".scan(/\w+ain/)
+=> ["rain", "Spain", "main", "plain"]
+
+#match. this method returns the first item in your string that matches a given Regular Expression
+"The rain in Spain lies mainly in the plain".match(/\w+ain/)
+=> #<MatchData "rain"> 
+ 
+"The rain in Spain lies mainly in the plain".match(/France/)
+=> nil
+
+#the match method is usually used as a boolean, indicating the existance of the pattern in the given string
+
+#grep. is a enumerable method for pattern searching in arrays and hashes. similar to scan, grep will return an array matching of matching items from an array 
+names = ["Jeri Faria", "Althea Voth", "Audry Donoho", "Scotty Chaves", "Lance Barrio", "Zachary Newhall", "Stefany Janey", "Tressie Kinsel", "Raven Grimsley", "Marketta Gaylor", "Leota Crowe", "Mazie Norman", "Damien Loffredo"]
+ 
+#Get items from array where first name has five letters:
+names.grep(/^\w{5}\s/)
+ 
+=> ["Audry Donoho", "Lance Barrio", "Raven Grimsley", "Leota Crowe", "Mazie Norman"]
+
+#Using parentheses in our regex allows us to create 'groups' that we can refer to in our scan/match/grep methods as indexes in an array. In the example below we create three capture groups for the three sets of digits in a phone number. Now, when we scan a list of numbers, each phone number is broken down into subgroups based on the capture groups we built in our regular expressions:
+numbers = "202-555-0192 202-555-0147 202-555-0131 202-555-0116 202-555-0192 202-555-0197"
+ 
+number_breakdown = numbers.scan(/(\d+)-(\d+)-(\d+)/)
+=> [["202", "555", "0192"], ["202", "555", "0147"], ["202", "555", "0131"], ["202", "555", "0116"], ["202", "555", "0192"], ["202", "555", "0197"]] 
+ 
+number_breakdown[0]
+=> ["202", "555", "0192"]
+ 
+number_breakdown[0][1]
+=> "555"
